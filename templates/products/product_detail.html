@@ -1,0 +1,98 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+
+  <div class="col-sm-8">
+    <h2>{{product.title}}</h2>
+    {% if product.productimage_set.count > 0 %}
+      <div>
+        {# Display the first image in the product images set     #}
+        <img class="img-responsive" width="500" height="500"  src="{{product.productimage_set.first.image.url}}">
+      </div>
+    {% endif %}
+    <p class="lead">
+      {{product.description}}
+      {% lorem 1 p %}
+    </p>
+  </div>
+  {# Product sidebar  #}
+  <div class="col-sm-4">
+    <form id="add-form" action="{% url 'cart' %}">
+      {# Case where the product has multiple variation#}
+      {% if product.variation_set.count > 1 %}
+        <span id="price"></span>  <span id="original-price" ></span>
+        <select name="item" class="form-control" id="variation-select">
+          {% for variation in product.variation_set.all %}
+            <option data-price="{{variation.price}}" data-sale-price="{{variation.sale_price}}"
+                    value="{{variation.pk}}">{{variation.title}}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+        {# Case where the product has only the default variation#}
+        <input type="hidden" name="item" value="{{ product.variation_set.first.id }}">
+        <span id="price">
+          {% if product.variation_set.first.sale_price %}
+            {{product.variation_set.first.sale_price}} LE
+          {% else %}
+            {{product.variation_set.first.price}} LE
+          {% endif %}
+        </span>
+        <span id="original-price" >
+          {% if product.variation_set.first.sale_price %}
+            {{product.variation_set.first.price}} LE
+          {% endif %}
+        </span>
+      {% endif %}
+      <div class="form-group">
+        <label for="qty">Quantity</label>
+        <input class="form-control" type="number" name="qty" value="1" min="0">
+      </div>
+
+      <br />
+      <button class="btn btn-primary btn-sm" id="submit-btn">
+          <i class="fa fa-shopping-cart"></i>
+          <strong>Add to Cart</strong>
+      </button>
+    </form>
+
+    <br/>
+    <hr/>
+      <h5>Share</h5>
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+        <i class="fa fa-facebook-square fa-3x"></i>
+      </a>
+      <a href="#">
+        <i class="fa fa-twitter-square fa-3x"></i>
+      </a>
+      <a href="#">
+        <i class="fa fa-google-plus-square fa-3x"></i>
+      </a>
+    <hr/>
+    <h3>Related Products:</h3>
+    <div class="row">
+        {% for prod in related %}
+            <div class="col-sm-6 text-center">
+                {% include 'products/product_thumbnail.html' with product=prod price="True" %}
+            </div>
+            {% cycle '' '</div><div class="row">' %}
+        {% endfor %}
+    </div>
+  </div>
+
+  {# End product sidebar#}
+</div>
+{% endblock %}
+
+{# Link JS file for some dynamic ui actions#}
+{% block scripts %}
+
+  {{ block.super }}
+  <script>
+    // set javascript variable from Django context
+    var ajaxUrl = "{% url 'cart' %}"
+  </script>
+  <script src="{% static 'js/product_detail.js' %}"></script>
+
+{% endblock %}

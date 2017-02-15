@@ -1,0 +1,41 @@
+body, h1,h2,h3,h4,h5,h6{
+  font-family: Montserrat !important;
+}
+#nav-bar{
+  padding: 0 50px 0 10px;
+}
+#main-container  {
+  margin-top: 75px;
+  /*padding: 0 75px 0 75px;*/
+}
+.jumbotron{
+  padding: 0 25px 0 25px ;
+}
+
+#fa-navbar-cart{
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.messages {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  right: 0%;
+  z-index: 5000;
+  display: none;
+}
+
+.box{
+  margin: 5px;
+}
+
+#price{
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+#original-price{
+  color: #808080;
+  text-decoration: line-through;
+}

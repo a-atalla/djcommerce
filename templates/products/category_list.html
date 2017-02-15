@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  {% if category_list %}
+  <table class="table">
+    {% for category in category_list%}
+    <tr>
+      <td><a href="{{ category.get_absolute_url }}">{{category.title}}</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% else %}
+    <h2>No categories found</h2>
+  {% endif %}
+{% endblock %}

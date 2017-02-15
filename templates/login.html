@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="col-sm-6 col-sm-offset-3 well">
+    <h3>User Login</h3>
+    <hr>
+    <form action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
+      {{form|crispy}}
+      <input type="hidden" name="next" value="{{next}}">
+      <input class="col-sm-4 col-sm-offset-4 btn btn-primary" type="submit" value="Login">
+
+    </form>
+
+  </div>
+
+{% endblock %}

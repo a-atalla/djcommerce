@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>All Products <small><a href="{% url 'category_list' %}">Categories</a></small></h2>
+  {% if product_list %}
+  <div class="row">
+    {% for product in product_list%}
+        <div class="col-sm-3 text-center">
+            {% include 'products/product_thumbnail.html' with product=product price="True" %}
+        </div>
+        {% cycle '' '' '' '</div><div class="row">' %}
+    {% endfor %}
+  </div>
+
+  {% else %}
+    <h2>No products found</h2>
+  {% endif %}
+{% endblock %}

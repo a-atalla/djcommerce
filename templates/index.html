@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="row jumbotron">
+    {% if featured %}
+        <div class="col-sm-8">
+            <h1>{{ featured.title }}</h1>
+            <p>{{ featured.description }}</p>
+            <p>{% lorem 1 p %}</p>
+            <p><a class="btn btn-primary btn-lg" href="{{ featured.get_absolute_url }}" role="button">Learn more</a></p>
+        </div>
+        <div class="col-sm-4">
+            <img class="img-responsive" width="50%" height="50%" src="{{ featured.productimage_set.first.image.url }}" alt="">
+        </div>
+    {% endif %}
+  </div>
+{% endblock %}

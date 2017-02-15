@@ -1,0 +1,11 @@
+<a class="thumbnail" href="{{ product.get_absolute_url }}" alt="{{ product.title }}">
+    <h5>{{ product.title }}</h5>
+    <img class="img-responsive"  src="{{product.productimage_set.first.image.url}}">
+    {% if price == "True" %}
+
+        <span id="price">{{ product.variation_set.first.get_price }} EGP</span>
+        {% if product.variation_set.first.sale_price and product.variation_set.first.sale_price > 0 %}
+            <span id="original-price" >{{ product.variation_set.first.price }} EGP</span>
+        {% endif %}
+    {% endif %}
+</a>
