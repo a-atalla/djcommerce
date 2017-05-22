@@ -44,6 +44,7 @@ $(function(){
             flashMsg = "Succesfully update quantity"
           }
           showFlashMessage(flashMsg, "success");
+          updateCartCount();
       },
       error: function(res, err){
         console.log(res, err)

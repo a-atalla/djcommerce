@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     # Projects's apps
     'products',
-    'accounts',
     'carts'
 ]
 
@@ -142,3 +141,6 @@ MESSAGE_TAGS = {
 
 
 LOGIN_URL = '/login'
+
+
+TAX_PERCENTAGE = 0.085

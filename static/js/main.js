@@ -1,4 +1,4 @@
-var showFlashMessage = function(message, status){
+function showFlashMessage(message, status){
       console.log("From Flash Message")
       var flash = "<div id='jquery-flash' class='messages'><div class='col-sm-3 pull-right'><div class='alert alert-"+status+"'>"+
         "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"+
@@ -18,3 +18,20 @@ $("#django-flash").fadeIn();
 setTimeout(function(){
   $("#django-flash").fadeOut();
 }, 3000)
+
+
+function updateCartCount(){
+  // set cart count on navbar
+  $.ajax({
+    method: "GET",
+    url: "/cart/count",
+    success: function(data){
+      $("#cart-count").text(data.count);
+    },
+    error: function(){
+
+    }
+})
+}
+
+updateCartCount();

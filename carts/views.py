@@ -1,9 +1,30 @@
 from django.http import Http404, JsonResponse
 from django.views.generic import View
-from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic.detail import SingleObjectMixin, DetailView
 from carts.models import Cart, CartItem
 from products.models import Variation
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+
+
+class ItemCountView(View):
+
+    def get(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+            cart_id = request.session.get("cart_id")
+            if cart_id == None:
+                count = 0
+            else:
+                cart = Cart.objects.get(id=cart_id)
+                count = cart.items.count()
+
+            request.session['cart_item_count'] = count
+            return JsonResponse({
+                "count": count
+            })
+        else:
+            raise Http404
 
 
 class CartView(SingleObjectMixin, View):
@@ -55,10 +76,31 @@ class CartView(SingleObjectMixin, View):
                 'created': is_created,
                 'deleted': is_delete,
                 'line_total': cart_item.line_total,
-                'cart_subtotal': cart.subtotal
+                'cart_subtotal': cart.subtotal,
+                'cart_total_tax': cart.total_tax,
+                'cart_total_price': cart.total_price
             })
 
         context = {
             "cart": self.get_object()
         }
         return render(request, self.template_name, context)
+
+
+class CheckoutView(DetailView):
+    model = Cart
+    template_name = 'carts/checkout_view.html'
+
+    def get_object(self, *args, **kwargs):
+        cart_id = self.request.session.get('cart_id')
+        if not cart_id:
+            return redirect(reverse('cart'))
+
+        cart = Cart.objects.get(id=cart_id)
+        return cart
+
+    def get_context_data(self, **kwargs):
+        context = super(CheckoutView, self).get_context_data(**kwargs)
+        context['login_form'] = AuthenticationForm()
+        context['next_url'] = self.request.build_absolute_uri
+        return context

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {% if not user.is_authenticated %}
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Continue as Guest:</h3>
+      <hr/>
+    </div>
+    <div class="col-sm-6">
+      <h3>Login:</h3>
+      <hr/>
+
+      <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        {{ login_form |crispy}}
+        <input type="hidden" name="next" value="{{ next_url }}">
+        <input type="submit" class="col-sm-4 col-sm-offset-4 btn btn-primary" value="login">
+      </form>
+
+    </div>
+  </div>
+  {% else %}
+    <h3>you are logged in</h3>
+  {% endif %}
+
+{% endblock %}

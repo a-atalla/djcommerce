@@ -15,6 +15,9 @@ $(function(){
 
           $("#line-total-"+lineId).text(res.line_total);
           $("#cart-subtotal").text(res.cart_subtotal);
+          $("#cart-total-tax").text(res.cart_total_tax);
+          $("#cart-total-price").text(res.cart_total_price);
+
           var flashMsg="";
           if (res.created){
             flashMsg = "Successfully add to cart";

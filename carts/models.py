@@ -11,6 +11,8 @@ class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     items = models.ManyToManyField(Variation, through='CartItem')
     subtotal = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    total_tax = models.DecimalField(decimal_places=2, max_digits=20, default=0)
+    total_price = models.DecimalField(decimal_places=2, max_digits=20, default=0)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -50,3 +52,15 @@ def post_save_cart_item(sender, instance,  *args, **kwargs):
 pre_save.connect(pre_save_cart_item, sender=CartItem)
 post_save.connect(post_save_cart_item, sender=CartItem)
 post_delete.connect(post_save_cart_item, sender=CartItem)
+
+
+# tax and totatl price calculations for each cart
+def calculate_total_price(sender, instance, *args, **kwargs):
+    tax_percentage = settings.TAX_PERCENTAGE
+    total_tax = instance.subtotal * Decimal(tax_percentage)
+    total_price = instance.subtotal + total_tax
+
+    instance.total_tax = round(total_tax, 2)
+    instance.total_price = round(total_price, 2)
+
+pre_save.connect(calculate_total_price, sender=Cart)

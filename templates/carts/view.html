@@ -39,8 +39,16 @@
         {% endfor %}
         <tr>
           <td colspan="3" class="text-right"><strong>Subtotal:   </strong></td>
-          <td class="text-right"><strong id="cart-subtotal">{{ cart.subtotal }}</strong></td>
+          <td class="text-right"><strong id="cart-subtotal">{{ cart.subtotal }} EGP</strong></td>
         </tr>
+      <tr>
+          <td colspan="3" class="text-right"><strong>Total Tax:   </strong></td>
+          <td class="text-right"><strong id="cart-total-tax">{{ cart.total_tax }} EGP</strong></td>
+      </tr>
+      <tr>
+          <td colspan="3" class="text-right"><strong>Total Price:   </strong></td>
+          <td class="text-right"><strong id="cart-total-price">{{ cart.total_price }} EGP</strong></td>
+      </tr>
       </tbody>
     </table>
   {% endif %}
